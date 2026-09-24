@@ -2,7 +2,8 @@ pipeline {
   agent any
 
   environment {
-    NODE_ENV = 'production'
+    NODE_ENV = 'development'
+    NPM_CONFIG_PRODUCTION = 'false'
     IMAGE_NAME = 'taskflow-backend'
     IMAGE_TAG = "${env.BUILD_NUMBER}"
     SONAR_HOST_URL = 'http://localhost:9000'
