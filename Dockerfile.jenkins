@@ -8,9 +8,11 @@ RUN apt-get update && \
         curl \
         gnupg \
         lsb-release \
-        docker.io && \
-    rm -rf /var/lib/apt/lists/*
+        docker.io \
+        docker-cli && \
+    rm -rf /var/lib/apt/lists/* && \
+    ln -sf /usr/bin/docker /usr/local/bin/docker
 
 RUN usermod -aG docker jenkins
 
-USER jenkins
+USER root
