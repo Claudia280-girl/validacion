@@ -48,15 +48,17 @@ pipeline {
     stage('Analisis con SonarQube') {
       steps {
         echo 'Enviando analisis a SonarQube...'
-        sh """
-          npx sonarqube-scanner \
-            -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-            -Dsonar.projectName=taskflow-backend \
-            -Dsonar.sources=src \
-            -Dsonar.host.url=${SONAR_HOST_URL} \
-            -Dsonar.login=${SONAR_LOGIN} \
-            -Dsonar.password=${SONAR_PASSWORD}
-        """
+        withSonarQubeEnv('SonarQube-Server') {
+          sh """
+            npx sonarqube-scanner \
+              -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+              -Dsonar.projectName=taskflow-backend \
+              -Dsonar.sources=src \
+              -Dsonar.host.url=${SONAR_HOST_URL} \
+              -Dsonar.login=${SONAR_LOGIN} \
+              -Dsonar.password=${SONAR_PASSWORD}
+          """
+        }
       }
     }
 
