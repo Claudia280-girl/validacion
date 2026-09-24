@@ -6,8 +6,10 @@ pipeline {
     NPM_CONFIG_PRODUCTION = 'false'
     IMAGE_NAME = 'taskflow-backend'
     IMAGE_TAG = "${env.BUILD_NUMBER}"
-    SONAR_HOST_URL = 'http://localhost:9000'
+    SONAR_HOST_URL = 'http://sonarqube:9000'
     SONAR_PROJECT_KEY = 'taskflow:backend'
+    SONAR_LOGIN = 'admin'
+    SONAR_PASSWORD = 'Coco258%'
   }
 
   tools {
@@ -46,9 +48,15 @@ pipeline {
     stage('Analisis con SonarQube') {
       steps {
         echo 'Enviando analisis a SonarQube...'
-        withSonarQubeEnv('SonarQube') {
-          sh 'npx sonarqube-scanner -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.sources=src -Dsonar.host.url=${SONAR_HOST_URL}'
-        }
+        sh """
+          npx sonarqube-scanner \
+            -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+            -Dsonar.projectName=taskflow-backend \
+            -Dsonar.sources=src \
+            -Dsonar.host.url=${SONAR_HOST_URL} \
+            -Dsonar.login=${SONAR_LOGIN} \
+            -Dsonar.password=${SONAR_PASSWORD}
+        """
       }
     }
 
